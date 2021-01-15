@@ -8,7 +8,4 @@ import Control.Applicative
 
 main :: IO ()
 main = do
-  print $ multi 5
-
-multi :: Int -> Int
-multi x = x * 1
+  otherMain

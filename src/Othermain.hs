@@ -7,6 +7,7 @@ import Data.List
 import Prelude hiding (map)
 import Custom
 import Control.Applicative
+import Control.Exception
 
 otherMain :: IO ()
 otherMain = do
@@ -28,6 +29,14 @@ otherMain = do
   charstuff
   stringstuff
   liststuff
+  print $ foobar [1..100]
+
+  print . surface $ Circle 10 20 10
+
+  result <- try $ evaluate (5 `div` 2) :: IO (Either SomeException Int)
+  case result of
+    Left ex -> putStrLn $ "Cought an exception: " ++ show ex
+    Right val -> putStrLn $ "The answer is: " ++ show val
 
 h1 :: Int -> Int -> Int
 h1 x y = 2*x+y
@@ -86,3 +95,10 @@ liststuff = do
   print (product [1..10])
   print (elem 5 ([1..5]))
   print (elem 6 ([1..5]))
+
+foobar :: [Int] -> [String]
+foobar l = l >>= (\x -> if x `rem` 15 == 0 then ["FooBar"] else if x `rem` 5 == 0 then ["Foo"] else if x `rem` 3 == 0 then ["Bar"] else [show x])
+
+data Area = Circle Float Float Float
+surface :: Area -> Float
+surface (Circle _ _ r) = pi * r ^ 2
